@@ -38,7 +38,7 @@ public class ProductsController : Controller
         return Ok(products);
     }
 
-    [HttpGet("/api/products")]
+    [HttpGet("/api/products/{id}")]
     public IActionResult GetById([FromQuery]int id)
     {
         var products = _context.Products.FirstOrDefault(p => p.Id == id);
