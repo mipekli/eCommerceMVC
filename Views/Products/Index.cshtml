@@ -1,0 +1,13 @@
+﻿@model List<eCommerceMVC.Models.Product>
+
+<h1>Ürünler</h1>
+
+@foreach (var product in Model)
+{
+    <div>
+        <h3>@product.Name</h3>
+        <p>Fiyat: @product.Price ₺</p>
+        <a href="/products/details/@product.Id">Detaya Git</a>
+        <hr />
+    </div>
+}
