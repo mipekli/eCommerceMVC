@@ -140,3 +140,4 @@
 /Users/muhammed/RiderProjects/eCommerceMVC/eCommerceMVC/obj/Debug/net8.0/eCommerceMVC.MvcApplicationPartsAssemblyInfo.cs
 /Users/muhammed/RiderProjects/eCommerceMVC/eCommerceMVC/bin/Debug/net8.0/Npgsql.dll
 /Users/muhammed/RiderProjects/eCommerceMVC/eCommerceMVC/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+/Users/muhammed/RiderProjects/eCommerceMVC/eCommerceMVC/obj/Debug/net8.0/eCommerceMVC.sourcelink.json
