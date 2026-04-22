@@ -11,8 +11,8 @@ using eCommerceMVC.Data;
 namespace eCommerceMVC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260420160828_FixProductId")]
-    partial class FixProductId
+    [Migration("20260422233336_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
