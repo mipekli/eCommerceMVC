@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using eCommerceMVC.Models;
 using eCommerceMVC.Data;
+using eCommerceMVC.DTOs;
+using eCommerceMVC.Services;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
 
@@ -8,40 +10,40 @@ namespace eCommerceMVC.Controllers;
 
 public class ProductsController : Controller
 {
-    private readonly AppDbContext _context;
+  
+    private readonly ProductService _productService;
 
-    public ProductsController(AppDbContext context)
-    {
-        _context = context;
+    public ProductsController(ProductService productService)
+    {        _productService = productService;
     }
     
-    public IActionResult Index()
-    {
-        var products = _context.Products.ToList();
-        return View(products);
-    }
-
-    public IActionResult Details(int id)
-    {
-        var product = _context.Products.FirstOrDefault(p => p.Id == id);
-        if (product == null)
+        public IActionResult Index()
         {
-            return NotFound();
+            var products = _productService.GetAll();
+            return View(products);
         }
-        return View(product);
-    }
+
+        public IActionResult Details(int id)
+        {
+            var product = _productService.GetByID(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
 
     [HttpGet("/api/products")]
     public IActionResult GetAll()
     {
-        var products= _context.Products.ToList();
+        var products = _productService.GetAll();
         return Ok(products);
     }
 
     [HttpGet("/api/products/{id}")]
-    public IActionResult GetById([FromQuery]int id)
+    public IActionResult GetById([FromRoute]int id)
     {
-        var products = _context.Products.FirstOrDefault(p => p.Id == id);
+        var products = _productService.GetByID(id);
         if(products == null)
         {
             return NotFound();
@@ -50,36 +52,27 @@ public class ProductsController : Controller
     }
 
     [HttpPost("/api/products")]
-    public IActionResult Create([FromBody] Product product)
+    public IActionResult Create([FromBody] ProductCreateDto dto)
     {
-        _context.Products.Add(product);
-        _context.SaveChanges();
+        var product =_productService.Add(dto);
         return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
     }
 
     [HttpPut("/api/products/{id}")]
     public IActionResult Update(int id, [FromBody] Product updated)
     {
-        var product = _context.Products.FirstOrDefault(p => p.Id == id);
-        if (product == null)
-        {
-            return NotFound();
-        }
-        product.Name=updated.Name;
-        product.Price=updated.Price;
-        _context.SaveChanges();
+        
+        var product = _productService.GetByID(id);
+        
+        
+        _productService.Update(updated);
         return Ok(product);
     }
 
     [HttpDelete("/api/products/{id}")]
     public IActionResult Delete(int id)
     {
-        var product = _context.Products.FirstOrDefault(p => p.Id == id);
-        if (product == null)
-        {
-            return NotFound();
-        }
-        _context.Products.Remove(product);
+        _productService.Delete(id);
         return NoContent();
     }
 

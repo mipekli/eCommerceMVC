@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using eCommerceMVC.Data;
+using eCommerceMVC.Interfaces;
+using eCommerceMVC.Middleware;
+using eCommerceMVC.Repositories;
+using eCommerceMVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +12,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ProductService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -26,9 +32,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
