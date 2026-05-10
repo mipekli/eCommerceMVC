@@ -40,17 +40,17 @@ public class ProductRepository: IProductRepository
 
     public Product Update(Product updated)
     {
-        var productUpadte=_context.Products.FirstOrDefault(p=> p.Id== updated.Id);
-        if (productUpadte == null)
+        var productUpdate=_context.Products.FirstOrDefault(p=> p.Id== updated.Id);
+        if (productUpdate == null)
         {
             return null;
         }
         else
         {
-            productUpadte.Name = updated.Name;
-            productUpadte.Price = updated.Price;
+            productUpdate.Name = updated.Name;
+            productUpdate.Price = updated.Price;
             _context.SaveChanges();
-            return productUpadte;
+            return productUpdate;
         }
     }
 }

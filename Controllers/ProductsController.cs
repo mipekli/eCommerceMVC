@@ -10,28 +10,29 @@ namespace eCommerceMVC.Controllers;
 
 public class ProductsController : Controller
 {
-  
     private readonly ProductService _productService;
 
     public ProductsController(ProductService productService)
-    {        _productService = productService;
+    {
+        _productService = productService;
     }
-    
-        public IActionResult Index()
+
+    public IActionResult Index()
+    {
+        var products = _productService.GetAll();
+        return View(products);
+    }
+
+    public IActionResult Details(int id)
+    {
+        var product = _productService.GetByID(id);
+        if (product == null)
         {
-            var products = _productService.GetAll();
-            return View(products);
+            return NotFound();
         }
 
-        public IActionResult Details(int id)
-        {
-            var product = _productService.GetByID(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
-        }
+        return View(product);
+    }
 
     [HttpGet("/api/products")]
     public IActionResult GetAll()
@@ -41,30 +42,30 @@ public class ProductsController : Controller
     }
 
     [HttpGet("/api/products/{id}")]
-    public IActionResult GetById([FromRoute]int id)
+    public IActionResult GetById([FromRoute] int id)
     {
         var products = _productService.GetByID(id);
-        if(products == null)
+        if (products == null)
         {
             return NotFound();
         }
+
         return Ok(products);
     }
 
     [HttpPost("/api/products")]
     public IActionResult Create([FromBody] ProductCreateDto dto)
     {
-        var product =_productService.Add(dto);
+        var product = _productService.Add(dto);
         return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
     }
 
     [HttpPut("/api/products/{id}")]
     public IActionResult Update(int id, [FromBody] Product updated)
     {
-        
         var product = _productService.GetByID(id);
-        
-        
+
+
         _productService.Update(updated);
         return Ok(product);
     }
@@ -75,6 +76,4 @@ public class ProductsController : Controller
         _productService.Delete(id);
         return NoContent();
     }
-
-    
 }
